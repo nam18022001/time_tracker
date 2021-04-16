@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:time_tracker_demo/app/services/auth.dart';
-import 'package:time_tracker_demo/app/sign_in_page.dart';
+import 'package:time_tracker_demo/app/sign_in/sign_in_page.dart';
 import 'package:time_tracker_demo/test.dart';
 
 import 'home_page.dart';
