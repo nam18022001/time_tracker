@@ -1,13 +1,49 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:time_tracker_demo/app/services/auth.dart';
 import 'package:time_tracker_demo/common_widgets/custom_raised_button.dart';
 import 'package:time_tracker_demo/common_widgets/social_sign_in_button.dart';
 
+import 'email_sign_page.dart';
+
 class SignInPage extends StatelessWidget {
+  const SignInPage({
+    Key key,
+    @required this.auth,
+  }) : super(key: key);
+
+  final AuthBase auth;
+
   Future<void> _signInAnonymous() async {
-    final userAnonymous = await FirebaseAuth.instance.signInAnonymously();
-    print('${userAnonymous.user.uid}');
+    try {
+      await auth.signInAnonymously();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    try {
+      await auth.signInWithGoogle();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> _signInWithFacebook() async {
+    try {
+      await auth.signInWithFacebook();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void _signInWithEmail(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        fullscreenDialog: true,
+        builder: (context) => EmailSignInPage(auth: auth),
+      ),
+    );
   }
 
   @override
@@ -17,11 +53,11 @@ class SignInPage extends StatelessWidget {
         title: Text("Time Tracker"),
         elevation: 5.0,
       ),
-      body: _buildContent(),
+      body: _buildContent(context),
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
       color: Colors.black26,
@@ -44,7 +80,7 @@ class SignInPage extends StatelessWidget {
             borderRadius: 50.0,
             color: Colors.white,
             textColor: Colors.black,
-            onPressed: () {},
+            onPressed: _signInWithGoogle,
           ),
           SizedBox(
             height: 10.0,
@@ -55,7 +91,7 @@ class SignInPage extends StatelessWidget {
             borderRadius: 50.0,
             color: Color(0xFF334D92),
             textColor: Colors.white,
-            onPressed: () {},
+            onPressed: _signInWithFacebook,
           ),
           SizedBox(
             height: 10.0,
@@ -71,7 +107,7 @@ class SignInPage extends StatelessWidget {
             ),
             color: Colors.white,
             borderRadius: 50.0,
-            onPressed: () {},
+            onPressed: () => _signInWithEmail(context),
           ),
           SizedBox(
             height: 10.0,
